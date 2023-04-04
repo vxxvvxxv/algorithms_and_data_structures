@@ -71,6 +71,16 @@ func (node *BinaryTreeNode) Add(val int) {
 	}
 }
 
+func (node *BinaryTreeNode) Print() {
+	if node.IsEmpty() {
+		return
+	}
+
+	node.Left.Print()
+	fmt.Println(node.Val)
+	node.Right.Print()
+}
+
 func TestBinaryTree(t *testing.T) {
 	tcc := []struct {
 		nums []int
@@ -93,6 +103,9 @@ func TestBinaryTree(t *testing.T) {
 
 			if len(tc.nums) != 0 {
 				assert.Equal(t, len(tc.nums), gotBinaryTree.root.Count())
+
+				t.Log("gotBinaryTree.root:")
+				gotBinaryTree.root.Print()
 			}
 		})
 	}
