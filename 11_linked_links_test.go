@@ -24,6 +24,10 @@ func (list *List) Count() int {
 func (list *List) CalculateCount() int {
 	counter := 0
 
+	if list.startNode == nil {
+		return counter
+	}
+
 	node := list.startNode
 	counter++
 
@@ -65,6 +69,7 @@ func TestListNode(t *testing.T) {
 	tcc := []struct {
 		nums []int
 	}{
+		{nums: []int{}},
 		{nums: []int{1}},
 		{nums: []int{1, 2, 3, 4}},
 		{nums: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}},
