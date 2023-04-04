@@ -48,9 +48,12 @@ func (list *List) ToSlice() []int {
 
 	node := list.startNode
 
-	for node.Next != nil {
+	for i := 0; i < list.Count(); i++ {
 		result = append(result, node.Val)
-		node = node.Next
+
+		if node.Next != nil {
+			node = node.Next
+		}
 	}
 
 	return result
@@ -99,6 +102,8 @@ func TestListNode(t *testing.T) {
 
 			assert.Equal(t, len(tc.nums), gotList.Count())
 			assert.Equal(t, len(tc.nums), gotList.CalculateCount())
+
+			assert.Equal(t, tc.nums, gotList.ToSlice())
 		})
 	}
 }
