@@ -39,30 +39,46 @@ func (list *List) CalculateCount() int {
 	return counter
 }
 
-func createList(nums []int) *List {
-	list := &List{}
+func (list *List) ToSlice() []int {
+	result := make([]int, 0, list.Count())
 
-	var currentNode *ListNode
-	var prevNode *ListNode
-
-	for i, num := range nums {
-		currentNode = &ListNode{
-			Val: num,
-		}
-
-		// Fill the start point
-		if i == 0 {
-			list.startNode = currentNode
-		} else {
-			prevNode.Next = currentNode
-		}
-
-		prevNode = currentNode
-
-		list.count++
+	if list.startNode == nil {
+		return result
 	}
 
-	return list
+	node := list.startNode
+
+	for node.Next != nil {
+		result = append(result, node.Val)
+		node = node.Next
+	}
+
+	return result
+}
+
+func (list *List) AddNode(node *ListNode) {
+	if list.startNode == nil {
+		list.startNode = node
+	} else {
+		lastNode := list.startNode
+		for lastNode.Next != nil {
+			lastNode = lastNode.Next
+		}
+
+		lastNode.Next = node
+	}
+
+	list.count++
+}
+
+func (list *List) FillFromSlice(nums []int) {
+	for _, num := range nums {
+		list.AddNode(&ListNode{Val: num})
+	}
+}
+
+func createList() *List {
+	return &List{}
 }
 
 func TestListNode(t *testing.T) {
@@ -77,8 +93,9 @@ func TestListNode(t *testing.T) {
 
 	for _, tc := range tcc {
 		t.Run(fmt.Sprintf("%v", tc.nums), func(t *testing.T) {
-			gotList := createList(tc.nums)
+			gotList := createList()
 			fmt.Println("gotList.count:", gotList.Count())
+			gotList.FillFromSlice(tc.nums)
 
 			assert.Equal(t, len(tc.nums), gotList.Count())
 			assert.Equal(t, len(tc.nums), gotList.CalculateCount())
